@@ -4,16 +4,16 @@
 
 This is the working area for the individual Internet-Draft, "Arm's Confidential Computing Architecture (Arm CCA) Attestation Verifier Endorsements".
 
-* [Editor's Copy](https://yogeshbdeshpande.github.io/draft-cca-rats-endorsements/#go.draft-ydb-rats-cca-endorsements.html)
+* [Editor's Copy](https://arm-attestation-drafts.github.io/draft-cca-rats-endorsements/#go.draft-ydb-rats-cca-endorsements.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-ydb-rats-cca-endorsements)
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-ydb-rats-cca-endorsements)
-* [Compare Editor's Copy to Individual Draft](https://yogeshbdeshpande.github.io/draft-cca-rats-endorsements/#go.draft-ydb-rats-cca-endorsements.diff)
+* [Compare Editor's Copy to Individual Draft](https://arm-attestation-drafts.github.io/draft-cca-rats-endorsements/#go.draft-ydb-rats-cca-endorsements.diff)
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/yogeshbdeshpande/draft-cca-rats-endorsements/blob/main/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/arm-attestation-drafts/draft-cca-rats-endorsements/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
