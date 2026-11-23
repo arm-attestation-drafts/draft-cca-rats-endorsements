@@ -56,6 +56,7 @@ normative:
 informative:
   RFC9334: rats-arch
   I-D.ietf-rats-ar4si: ar4si
+  I-D.ietf-rats-ear: ear
   CCA-ARCH:
     author:
       org: Arm
@@ -884,16 +885,15 @@ FUNC transform(
 
 ## Realm MEC Policy and Attestation Results
 
-The Realm MEC policy determines whether the memory of a Realm is protected by a Memory Encryption Context that is private to the Realm or one that is shared ({{sec-realm-mec-policy-refval}}).
-This directly affects the confidentiality of the Realm's runtime state with respect to the other software on the platform, and therefore the value that a Verifier assigns to the `runtime-opaque` Trustworthiness Claim in the Trustworthiness Vector of the Attestation Results ({{Section 2.3.4 of -ar4si}}).
+The Realm MEC policy determines whether the memory of a Realm is protected by a Memory Encryption Context that is either private to the Realm or shared ({{sec-realm-mec-policy-refval}}).
+This directly affects the confidentiality of the Realm's runtime state in relation to the other software on the platform and, consequently, the value that a Verifier assigns to the `runtime-opaque` Trustworthiness Claim in the Trustworthiness Vector of the Attestation Results ({{Section 2.3.4 of -ar4si}}).
 
-A Verifier that produces `runtime-opaque` values for CCA Realms therefore needs to take the appraised MEC policy into account.
-The mapping from MEC policy to a `runtime-opaque` value is part of the Appraisal Policy for Evidence and is out of scope for this document.
-
-A Reference Value Provider that omits the MEC policy Reference Value accepts any MEC policy.
-In this case, the Reference Values do not constrain the MEC policy, and a Relying Party that depends on a particular `runtime-opaque` value needs to obtain assurance on the MEC policy by other means, for example through the Verifier's Appraisal Policy.
-
-[^todo]
+A Verifier that produces `runtime-opaque` values for CCA Realms needs to take the MEC policy into account.
+For instance, it could map a "private" MEC policy to `affirming`, unconditionally.
+However, for a "shared" MEC policy, the choice between `affirming` and `warning` entirely depends on the Appraisal Policies of both the Verifier and the Relying Party.
+In particular, if the RVP omits the MEC policy Reference Value -- i.e., if it doesn't enforce any specific MEC policy -- a Verifier with no Appraisal Policy for the MEC policy cannot appraise that facet, and sets the `runtime-opaque` value to `incomplete` (see {{Section 3.2 of -ar4si}}).
+To enable the Relying Party to apply its own Appraisal Policy for Attestation Results, the Verifier can also convey the unappraised value of the Realm MEC policy claim in the Attestation Results.
+One option would be to use the `attester-claims` map of the `EAR-appraisal` ({{-ear}}).
 
 # IANA Considerations
 
