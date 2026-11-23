@@ -76,6 +76,12 @@
                   717569636b2062726f776e20666f7820'
               )
             }
+          },
+          / measurement-map (MEC policy) / {
+            / comid.mkey / 0 : "cca.mec-policy",
+            / comid.mval / 1 : {
+              / comid.integer / 17 : 1 / private /
+            }
           }
         ]
       ]
