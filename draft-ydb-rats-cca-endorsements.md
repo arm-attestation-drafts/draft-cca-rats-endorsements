@@ -55,6 +55,8 @@ normative:
 
 informative:
   RFC9334: rats-arch
+  I-D.ietf-rats-ar4si: ar4si
+  I-D.ietf-rats-ear: ear
   CCA-ARCH:
     author:
       org: Arm
@@ -336,7 +338,7 @@ cca-rotpk-measurement-map = {
 {: #cddl-rotpk-mm title="CCA ROTPK measurement-map"}
 
 
-An Endorser may choose to provision either the entire set of entries or the single active entry currently in use on the platform.
+A Reference Value Provider may choose to provision either the entire set of entries or the single active entry currently in use on the platform.
 
 #### CCA Platform Manufacturing Configuration
 
@@ -646,20 +648,60 @@ Realm Reference Values comprise:
 1. Realm Initial Measurements (RIM)
 2. Realm Extended Measurements (REMs)
 3. Realm Personalization Value (RPV)
+4. Realm MEC Policy
 
 All Realm Reference Values are carried in a `reference-triple-record` whose `environment-map` is as described in {{realm-id}}
 The triple includes as many `measurement-map`s as needed to fully describe the Realm.
 
 The `measurement-map` contents depend on the type of Reference Value.
 For all, the `mkey` uses the text variant of the `$measured-element-type-choice`.
-The value of the `mkey` MUST be "cca.rim" for the RIM measurement, "cca.rpv" for the RPV measurement, and "cca.rem0".."cca.rem3" for the REM measurements.
+The value of the `mkey` MUST be "cca.rim" for the RIM measurement, "cca.rpv" for the RPV measurement, "cca.mec-policy" for the MEC policy, and "cca.rem0".."cca.rem3" for the REM measurements.
 The `authorized-by` field of the `measurement-map` MUST NOT be present.
 
 RIM and REMs are encoded as `digests` (key 2).
 
 RPV is encoded using a `raw-value` (key 4) using the `tagged bytes` variant of the `$raw-value-type-choice`.
 
+The Realm MEC policy is encoded as described in {{sec-realm-mec-policy-refval}}.
+
 All the Realm Reference Values are optional except RIM, which is mandatory.
+
+#### Realm MEC Policy {#sec-realm-mec-policy-refval}
+
+The Realm MEC policy identifies the Memory Encryption Context (MEC) policy of the Realm, as reported in the Realm MEC policy claim of the CCA Realm token ({{Section 4.8 of -cca-token}}).
+If a MEC policy Reference Value is provided, the Verifier appraises the claim against it.
+A Reference Value Provider that accepts any MEC policy omits the Reference Value.
+
+The MEC policy is represented in the `integer` entry (key 17) of the `measurement-values-map` ({{Section 5.1.4.9 of -rats-corim}}).
+The value is an untagged `int`, which has exact match semantics: the Realm MEC policy claim in Evidence is a match if and only if it is equal to the value in the Reference Value.
+The `tagged-integer-set` and `tagged-integer-range` variants MUST NOT be used.
+The integer values are those of the Realm MEC policy claim, shown in {{cddl-mec-policy-mvm}}.
+
+~~~ cddl
+cca-mec-policy-measurement-values-map = {
+  &(integer: 17) => cca-realm-mec-policy
+}
+
+cca-realm-mec-policy-shared = 0
+cca-realm-mec-policy-private = 1
+
+cca-realm-mec-policy = cca-realm-mec-policy-shared /
+                       cca-realm-mec-policy-private
+~~~
+{: #cddl-mec-policy-mvm title="CCA Realm MEC Policy measurement-values-map"}
+
+The `measurement-values-map` is wrapped in a `measurement-map` with an `mkey` using the text variant of the `$measured-element-type-choice`.
+The value of the `mkey` MUST be "cca.mec-policy".
+There MUST be only one `measurement-map` with `mkey` "cca.mec-policy" in the triple.
+The `authorized-by` field of the `measurement-map` MUST NOT be present.
+
+~~~ cddl
+cca-mec-policy-measurement-map = {
+  &(mkey: 0) => "cca.mec-policy"
+  &(mval: 1) => cca-mec-policy-measurement-values-map
+}
+~~~
+{: #cddl-mec-policy-mm title="CCA Realm MEC Policy measurement-map"}
 
 #### CoMID Example
 
@@ -757,6 +799,26 @@ FUNC element-from-rpv(
 ~~~
 {: #trans-rpv title="Transform a CCA Realm Personalization Value into an Element Map" }
 
+#### Realm MEC Policy
+
+The following function maps the CCA Realm MEC policy claim to a CoRIM element map.
+The element identifier is "cca.mec-policy", and the element claims use the standard integer attribute (key 17) to represent the MEC policy as a bare `int`, so that it is compared for exact match against the Reference Value ({{sec-realm-mec-policy-refval}}).
+
+~~~ pseudocode
+FUNC element-from-mec-policy(
+    mec-policy: cca-realm-mec-policy
+) -> element-map {
+    em := element-map::NEW()
+
+    em.element-id = tstr("cca.mec-policy")
+
+    em.element-claims.integer = mec-policy
+
+    RETURN em
+}
+~~~
+{: #trans-mec-policy title="Transform a CCA Realm MEC Policy into an Element Map" }
+
 #### Realm Token
 
 The following function maps the CCA realm's claims set to a single CoRIM `ae-item`.
@@ -764,8 +826,9 @@ The following function maps the CCA realm's claims set to a single CoRIM `ae-ite
 The environment is synthesized from the RIM.
 Each REM bank, if present, is mapped to an element-map entry with identifier "cca.rem0".."cca.rem3".
 The personalization value, if present, is mapped to an element-map entry with identifier "cca.rpv".
+The MEC policy is mapped to an element-map entry with identifier "cca.mec-policy".
 
-The process uses the functions defined in {{trans-realm-id}}, {{trans-rim}}, {{trans-rem}}, and {{trans-rpv}}.
+The process uses the functions defined in {{trans-realm-id}}, {{trans-rim}}, {{trans-rem}}, {{trans-rpv}}, and {{trans-mec-policy}}.
 
 The process assumes that the profile of the CCA Realm claims-set is "tag:arm.com,2024:realm#2.0.0".
 
@@ -804,6 +867,10 @@ FUNC transform(
         e := element-from-rpv(R.arm-platform-config-label)
         element-list::APPEND(e)
 
+    # map MEC policy
+    e := element-from-mec-policy(R.cca-realm-mec-policy-label)
+    element-list::APPEND(e)
+
     item.addition.element-list = element-list
     item.addition.profile =
         "tag:arm.com,2025:endorsements/cca_realm#1.0.0"
@@ -816,7 +883,17 @@ FUNC transform(
 
 # Security Considerations
 
-[^todo]
+## Realm MEC Policy and Attestation Results
+
+The Realm MEC policy determines whether the memory of a Realm is protected by a Memory Encryption Context that is either private to the Realm or shared ({{sec-realm-mec-policy-refval}}).
+This directly affects the confidentiality of the Realm's runtime state in relation to the other software on the platform and, consequently, the value that a Verifier assigns to the `runtime-opaque` Trustworthiness Claim in the Trustworthiness Vector of the Attestation Results ({{Section 2.3.4 of -ar4si}}).
+
+A Verifier that produces `runtime-opaque` values for CCA Realms needs to take the MEC policy into account.
+For instance, it could map a "private" MEC policy to `affirming`, unconditionally.
+However, for a "shared" MEC policy, the choice between `affirming` and `warning` entirely depends on the Appraisal Policies of both the Verifier and the Relying Party.
+In particular, if the RVP omits the MEC policy Reference Value -- i.e., if it doesn't enforce any specific MEC policy -- a Verifier with no Appraisal Policy for the MEC policy cannot appraise that facet, and sets the `runtime-opaque` value to `incomplete` (see {{Section 3.2 of -ar4si}}).
+To enable the Relying Party to apply its own Appraisal Policy for Attestation Results, the Verifier can also convey the unappraised value of the Realm MEC policy claim in the Attestation Results.
+One option would be to use the `attester-claims` map of the `EAR-appraisal` ({{-ear}}).
 
 # IANA Considerations
 
