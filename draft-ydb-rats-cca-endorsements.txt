@@ -5,8 +5,8 @@
 RATS                                                        Y. Deshpande
 Internet-Draft                                                   Arm Ltd
 Intended status: Informational                                T. Fossati
-Expires: 19 April 2027                                            Linaro
-                                                         16 October 2026
+Expires: 28 May 2027                                              Linaro
+                                                        24 November 2026
 
 
   A CoRIM Profile for Arm's Confidential Computing Architecture (CCA)
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 April 2027.
+   This Internet-Draft will expire on 28 May 2027.
 
 Copyright Notice
 
@@ -77,6 +77,7 @@ Table of Contents
        3.2.3.  Reference Values
        3.2.4.  Evidence Transformations
    4.  Security Considerations
+     4.1.  Realm MEC Policy and Attestation Results
    5.  IANA Considerations
    6.  References
      6.1.  Normative References
@@ -433,8 +434,9 @@ Table of Contents
 
                     Figure 10: CCA ROTPK measurement-map
 
-   An Endorser may choose to provision either the entire set of entries
-   or the single active entry currently in use on the platform.
+   A Reference Value Provider may choose to provision either the entire
+   set of entries or the single active entry currently in use on the
+   platform.
 
 3.1.3.4.  CCA Platform Manufacturing Configuration
 
@@ -891,6 +893,8 @@ Table of Contents
 
    3.  Realm Personalization Value (RPV)
 
+   4.  Realm MEC Policy
+
    All Realm Reference Values are carried in a reference-triple-record
    whose environment-map is as described in Section 3.2.2 The triple
    includes as many measurement-maps as needed to fully describe the
@@ -899,22 +903,66 @@ Table of Contents
    The measurement-map contents depend on the type of Reference Value.
    For all, the mkey uses the text variant of the $measured-element-
    type-choice.  The value of the mkey MUST be "cca.rim" for the RIM
-   measurement, "cca.rpv" for the RPV measurement, and
-   "cca.rem0".."cca.rem3" for the REM measurements.  The authorized-by
-   field of the measurement-map MUST NOT be present.
+   measurement, "cca.rpv" for the RPV measurement, "cca.mec-policy" for
+   the MEC policy, and "cca.rem0".."cca.rem3" for the REM measurements.
+   The authorized-by field of the measurement-map MUST NOT be present.
 
    RIM and REMs are encoded as digests (key 2).
 
    RPV is encoded using a raw-value (key 4) using the tagged bytes
    variant of the $raw-value-type-choice.
 
+   The Realm MEC policy is encoded as described in Section 3.2.3.1.
+
    All the Realm Reference Values are optional except RIM, which is
    mandatory.
 
-3.2.3.1.  CoMID Example
+3.2.3.1.  Realm MEC Policy
+
+   The Realm MEC policy identifies the Memory Encryption Context (MEC)
+   policy of the Realm, as reported in the Realm MEC policy claim of the
+   CCA Realm token (Section 4.8 of [I-D.ffm-rats-cca-token]).  If a MEC
+   policy Reference Value is provided, the Verifier appraises the claim
+   against it.  A Reference Value Provider that accepts any MEC policy
+   omits the Reference Value.
+
+   The MEC policy is represented in the integer entry (key 17) of the
+   measurement-values-map (Section 5.1.4.9 of [I-D.ietf-rats-corim]).
+   The value is an untagged int, which has exact match semantics: the
+   Realm MEC policy claim in Evidence is a match if and only if it is
+   equal to the value in the Reference Value.  The tagged-integer-set
+   and tagged-integer-range variants MUST NOT be used.  The integer
+   values are those of the Realm MEC policy claim, shown in Figure 23.
+
+   cca-mec-policy-measurement-values-map = {
+     &(integer: 17) => cca-realm-mec-policy
+   }
+
+   cca-realm-mec-policy-shared = 0
+   cca-realm-mec-policy-private = 1
+
+   cca-realm-mec-policy = cca-realm-mec-policy-shared /
+                          cca-realm-mec-policy-private
+
+           Figure 23: CCA Realm MEC Policy measurement-values-map
+
+   The measurement-values-map is wrapped in a measurement-map with an
+   mkey using the text variant of the $measured-element-type-choice.
+   The value of the mkey MUST be "cca.mec-policy".  There MUST be only
+   one measurement-map with mkey "cca.mec-policy" in the triple.  The
+   authorized-by field of the measurement-map MUST NOT be present.
+
+   cca-mec-policy-measurement-map = {
+     &(mkey: 0) => "cca.mec-policy"
+     &(mval: 1) => cca-mec-policy-measurement-values-map
+   }
+
+              Figure 24: CCA Realm MEC Policy measurement-map
+
+3.2.3.2.  CoMID Example
 
    An example CoMID containing one Reference Values triple with the
-   expected values for a Realm is given in Figure 23.
+   expected values for a Realm is given in Figure 25.
 
    / concise-mid-tag / {
      / comid.tag-identity / 1 : {
@@ -994,6 +1042,12 @@ Table of Contents
                      717569636b2062726f776e20666f7820'
                  )
                }
+             },
+             / measurement-map (MEC policy) / {
+               / comid.mkey / 0 : "cca.mec-policy",
+               / comid.mval / 1 : {
+                 / comid.integer / 17 : 1 / private /
+               }
              }
            ]
          ]
@@ -1001,14 +1055,14 @@ Table of Contents
      }
    }
 
-                      Figure 23: CCA realm identifiers
+                      Figure 25: CCA realm identifiers
 
 3.2.4.  Evidence Transformations
 
    This section describes the transformations required to map a CCA
    Realm Token to its equivalent CoRIM internal representation.
 
-   Figure 28 shows the complete transformation.
+   Figure 31 shows the complete transformation.
 
 3.2.4.1.  Realm Identification
 
@@ -1025,7 +1079,7 @@ Table of Contents
        RETURN env
    }
 
-        Figure 24: Transform a CCA Realm Initial Measurement into an
+        Figure 26: Transform a CCA Realm Initial Measurement into an
                                 Element Map
 
 3.2.4.2.  Realm Initial Measurements
@@ -1050,7 +1104,7 @@ Table of Contents
        RETURN em
    }
 
-        Figure 25: Transform a CCA Realm Initial Measurement into an
+        Figure 27: Transform a CCA Realm Initial Measurement into an
                                 Element Map
 
 3.2.4.3.  Realm Extended Measurements
@@ -1077,7 +1131,7 @@ Table of Contents
        RETURN em
    }
 
-      Figure 26: Transform a CCA Realm Extended Measurement Bank into
+      Figure 28: Transform a CCA Realm Extended Measurement Bank into
                                an Element Map
 
 3.2.4.4.  Realm Personalization Value
@@ -1099,10 +1153,32 @@ Table of Contents
        RETURN em
    }
 
-       Figure 27: Transform a CCA Realm Personalization Value into an
+       Figure 29: Transform a CCA Realm Personalization Value into an
                                 Element Map
 
-3.2.4.5.  Realm Token
+3.2.4.5.  Realm MEC Policy
+
+   The following function maps the CCA Realm MEC policy claim to a CoRIM
+   element map.  The element identifier is "cca.mec-policy", and the
+   element claims use the standard integer attribute (key 17) to
+   represent the MEC policy as a bare int, so that it is compared for
+   exact match against the Reference Value (Section 3.2.3.1).
+
+   FUNC element-from-mec-policy(
+       mec-policy: cca-realm-mec-policy
+   ) -> element-map {
+       em := element-map::NEW()
+
+       em.element-id = tstr("cca.mec-policy")
+
+       em.element-claims.integer = mec-policy
+
+       RETURN em
+   }
+
+      Figure 30: Transform a CCA Realm MEC Policy into an Element Map
+
+3.2.4.6.  Realm Token
 
    The following function maps the CCA realm's claims set to a single
    CoRIM ae-item.
@@ -1110,10 +1186,12 @@ Table of Contents
    The environment is synthesized from the RIM.  Each REM bank, if
    present, is mapped to an element-map entry with identifier
    "cca.rem0".."cca.rem3".  The personalization value, if present, is
-   mapped to an element-map entry with identifier "cca.rpv".
+   mapped to an element-map entry with identifier "cca.rpv".  The MEC
+   policy is mapped to an element-map entry with identifier "cca.mec-
+   policy".
 
-   The process uses the functions defined in Figure 24, Figure 25,
-   Figure 26, and Figure 27.
+   The process uses the functions defined in Figure 26, Figure 27,
+   Figure 28, Figure 29, and Figure 30.
 
    The process assumes that the profile of the CCA Realm claims-set is
    "tag:arm.com,2024:realm#2.0.0".
@@ -1152,6 +1230,10 @@ Table of Contents
            e := element-from-rpv(R.arm-platform-config-label)
            element-list::APPEND(e)
 
+       # map MEC policy
+       e := element-from-mec-policy(R.cca-realm-mec-policy-label)
+       element-list::APPEND(e)
+
        item.addition.element-list = element-list
        item.addition.profile =
            "tag:arm.com,2025:endorsements/cca_realm#1.0.0"
@@ -1160,12 +1242,36 @@ Table of Contents
        RETURN item
    }
 
-        Figure 28: Transform a CCA Realm into a CoRIM `ae` Relation
+        Figure 31: Transform a CCA Realm into a CoRIM `ae` Relation
 
 4.  Security Considerations
 
+4.1.  Realm MEC Policy and Attestation Results
 
-   // TODO
+   The Realm MEC policy determines whether the memory of a Realm is
+   protected by a Memory Encryption Context that is either private to
+   the Realm or shared (Section 3.2.3.1).  This directly affects the
+   confidentiality of the Realm's runtime state in relation to the other
+   software on the platform and, consequently, the value that a Verifier
+   assigns to the runtime-opaque Trustworthiness Claim in the
+   Trustworthiness Vector of the Attestation Results (Section 2.3.4 of
+   [I-D.ietf-rats-ar4si]).
+
+   A Verifier that produces runtime-opaque values for CCA Realms needs
+   to take the MEC policy into account.  For instance, it could map a
+   "private" MEC policy to affirming, unconditionally.  However, for a
+   "shared" MEC policy, the choice between affirming and warning
+   entirely depends on the Appraisal Policies of both the Verifier and
+   the Relying Party.  In particular, if the RVP omits the MEC policy
+   Reference Value -- i.e., if it doesn't enforce any specific MEC
+   policy -- a Verifier with no Appraisal Policy for the MEC policy
+   cannot appraise that facet, and sets the runtime-opaque value to
+   incomplete (see Section 3.2 of [I-D.ietf-rats-ar4si]).  To enable the
+   Relying Party to apply its own Appraisal Policy for Attestation
+   Results, the Verifier can also convey the unappraised value of the
+   Realm MEC policy claim in the Attestation Results.  One option would
+   be to use the attester-claims map of the EAR-appraisal
+   ([I-D.ietf-rats-ear]).
 
 5.  IANA Considerations
 
@@ -1186,9 +1292,9 @@ Table of Contents
    [I-D.ietf-rats-corim]
               Birkholz, H., Fossati, T., Deshpande, Y., Smith, N., and
               W. Pan, "Concise Reference Integrity Manifest", Work in
-              Progress, Internet-Draft, draft-ietf-rats-corim-11, 6 July
-              2026, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              rats-corim-11>.
+              Progress, Internet-Draft, draft-ietf-rats-corim-12, 1
+              November 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-rats-corim-12>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1219,6 +1325,21 @@ Table of Contents
    [CCA-ARCH] Arm, "Learn the architecture - Introducing Arm
               Confidential Compute Architecture", March 2025,
               <https://developer.arm.com/documentation/den0125/0400>.
+
+   [I-D.ietf-rats-ar4si]
+              Voit, E., Birkholz, H., Hardjono, T., Fossati, T., and V.
+              Scarlata, "Attestation Results for Secure Interactions",
+              Work in Progress, Internet-Draft, draft-ietf-rats-ar4si-
+              11, 30 October 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-rats-
+              ar4si-11>.
+
+   [I-D.ietf-rats-ear]
+              Fossati, T., Voit, E., Trofimov, S., and H. Birkholz, "EAT
+              Attestation Results", Work in Progress, Internet-Draft,
+              draft-ietf-rats-ear-06, 19 November 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-rats-
+              ear-06>.
 
    [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
               W. Pan, "Remote ATtestation procedureS (RATS)

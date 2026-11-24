@@ -11,22 +11,22 @@
        Arm Confidential Computing Architecture (CCA) Endorsements comprise reference values and cryptographic key material that a Verifier needs to appraise Attestation Evidence produced by an Arm CCA system. 
        This memo defines CCA Endorsements as a profile of the CoRIM data model. 
     " name="description">
-<meta content="xml2rfc 3.34.1" name="generator">
+<meta content="xml2rfc 3.35.0" name="generator">
 <meta content="draft-ydb-rats-cca-endorsements-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.34.1
-    Python 3.14.8
-    ConfigArgParse 1.8.0
+  xml2rfc 3.35.0
+    Python 3.14.10
+    ConfigArgParse 1.10.1
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.12.2
+    platformdirs 4.14.7
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.9.1
+    wcwidth 0.9.4
 -->
 <link href="draft-ydb-rats-cca-endorsements.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1027,7 +1027,7 @@ svg {
   & :is([stroke="white"], [stroke^="#fff"]) {
     stroke: var(--background-color);
   }
-  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+  & :is([fill="black"], [fill^="#000"], :not([fill], [fill] *)) {
     fill: var(--text-color);
   }
   & :is([fill="white"], [fill^="#fff"]) {
@@ -1042,11 +1042,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Arm CCA Endorsements</td>
-<td class="right">October 2026</td>
+<td class="right">November 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Deshpande &amp; Fossati</td>
-<td class="center">Expires 19 April 2027</td>
+<td class="center">Expires 28 May 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1059,12 +1059,12 @@ svg {
 <dd class="internet-draft">draft-ydb-rats-cca-endorsements-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-10-16" class="published">16 October 2026</time>
+<time datetime="2026-11-24" class="published">24 November 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-04-19">19 April 2027</time></dd>
+<dd class="expires"><time datetime="2027-05-28">28 May 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1111,7 +1111,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 28 May 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1190,6 +1190,11 @@ svg {
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-realm-mec-policy-and-attest" class="internal xref">Realm MEC Policy and Attestation Results</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
@@ -1249,7 +1254,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 For the details, see <span><a href="https://datatracker.ietf.org/doc/html/draft-ffm-rats-cca-token-04#section-3" class="relref">Section 3</a> of [<a href="#I-D.ffm-rats-cca-token" class="cite xref">I-D.ffm-rats-cca-token</a>]</span>.
 Appraising Arm CCA Evidence requires Endorsements for both the Platform and Realm.
 This document outlines the Platform and Realm Endorsements in <a href="#sec-platform-endorsements" class="auto internal xref">Section 3.1</a> and <a href="#realm-endorsements" class="auto internal xref">Section 3.2</a>, respectively.
-It also provides the Evidence transformation logic for conducting appraisals using the CoRIM processor (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-11#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-rats-corim" class="cite xref">I-D.ietf-rats-corim</a>]</span>) for both platform and realm claim sets, which are covered in <a href="#sec-trans-plat" class="auto internal xref">Section 3.1.5</a> and <a href="#sec-trans-realm" class="auto internal xref">Section 3.2.4</a>, respectively.<a href="#section-3-1" class="pilcrow">¶</a></p>
+It also provides the Evidence transformation logic for conducting appraisals using the CoRIM processor (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-12#section-8" class="relref">Section 8</a> of [<a href="#I-D.ietf-rats-corim" class="cite xref">I-D.ietf-rats-corim</a>]</span>) for both platform and realm claim sets, which are covered in <a href="#sec-trans-plat" class="auto internal xref">Section 3.1.5</a> and <a href="#sec-trans-realm" class="auto internal xref">Section 3.2.4</a>, respectively.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div id="sec-platform-endorsements">
 <section id="section-3.1">
         <h3 id="name-arm-cca-platform-endorsemen">
@@ -1496,7 +1501,7 @@ For example, this may include a description of the level of physical memory prot
 <p id="section-3.1.3.2-2">CCA Platform configuration is vendor-specific variable-length data.
 Only some of the data may be security-relevant.
 For these reasons, it is represented in a <code>raw-value</code> of the <code>measurement-values-map</code>, using the <code>tagged-masked-raw-value</code> variant of the <code>$raw-values-type-choice</code>.
-Refer to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-11#section-5.1.4.1.4.6" class="relref">Section 5.1.4.1.4.6</a> of [<a href="#I-D.ietf-rats-corim" class="cite xref">I-D.ietf-rats-corim</a>]</span> for the details about the comparison algorithm.<a href="#section-3.1.3.2-2" class="pilcrow">¶</a></p>
+Refer to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-12#section-5.1.4.1.4.6" class="relref">Section 5.1.4.1.4.6</a> of [<a href="#I-D.ietf-rats-corim" class="cite xref">I-D.ietf-rats-corim</a>]</span> for the details about the comparison algorithm.<a href="#section-3.1.3.2-2" class="pilcrow">¶</a></p>
 <span id="name-cca-platform-configuration-"></span><div id="cddl-config-mvm">
 <figure id="figure-7">
               <div class="lang-cddl sourcecode" id="section-3.1.3.2-3.1">
@@ -1607,7 +1612,7 @@ cca-rotpk-measurement-map = {
 <a href="#name-cca-rotpk-measurement-map" class="selfRef">CCA ROTPK measurement-map</a>
               </figcaption></figure>
 </div>
-<p id="section-3.1.3.3-15">An Endorser may choose to provision either the entire set of entries or the single active entry currently in use on the platform.<a href="#section-3.1.3.3-15" class="pilcrow">¶</a></p>
+<p id="section-3.1.3.3-15">A Reference Value Provider may choose to provision either the entire set of entries or the single active entry currently in use on the platform.<a href="#section-3.1.3.3-15" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="cca-platform-manufacturing-configuration">
@@ -1618,7 +1623,7 @@ cca-rotpk-measurement-map = {
 <p id="section-3.1.3.4-1">The CCA Platform Manufacturing Configuration represents a record of production phases and testing conducted during the manufacturing process for the platform instance.<a href="#section-3.1.3.4-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.3.4-2">CCA Platform Manufacturing Configuration is vendor-specific variable-length data.<a href="#section-3.1.3.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.1.3.4-3">It is represented in a <code>raw-value</code> of the <code>measurement-values-map</code>, using the <code>tagged-masked-raw-value</code> variant of the <code>$raw-values-type-choice</code>.
-Refer to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-11#section-5.1.4.1.4.6" class="relref">Section 5.1.4.1.4.6</a> of [<a href="#I-D.ietf-rats-corim" class="cite xref">I-D.ietf-rats-corim</a>]</span> for the details about the comparison algorithm.<a href="#section-3.1.3.4-3" class="pilcrow">¶</a></p>
+Refer to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-12#section-5.1.4.1.4.6" class="relref">Section 5.1.4.1.4.6</a> of [<a href="#I-D.ietf-rats-corim" class="cite xref">I-D.ietf-rats-corim</a>]</span> for the details about the comparison algorithm.<a href="#section-3.1.3.4-3" class="pilcrow">¶</a></p>
 <span id="name-cca-platform-manufacturing-c"></span><div id="cddl-mfg-config-mvm">
 <figure id="figure-11">
               <div class="lang-cddl sourcecode" id="section-3.1.3.4-4.1">
@@ -2142,25 +2147,80 @@ Therefore, this profile employs an <code>environment-map</code> with a class ide
             <li id="section-3.2.3-3.3">
               <p id="section-3.2.3-3.3.1">Realm Personalization Value (RPV)<a href="#section-3.2.3-3.3.1" class="pilcrow">¶</a></p>
 </li>
+            <li id="section-3.2.3-3.4">
+              <p id="section-3.2.3-3.4.1">Realm MEC Policy<a href="#section-3.2.3-3.4.1" class="pilcrow">¶</a></p>
+</li>
           </ol>
 <p id="section-3.2.3-4">All Realm Reference Values are carried in a <code>reference-triple-record</code> whose <code>environment-map</code> is as described in <a href="#realm-id" class="auto internal xref">Section 3.2.2</a>
 The triple includes as many <code>measurement-map</code>s as needed to fully describe the Realm.<a href="#section-3.2.3-4" class="pilcrow">¶</a></p>
 <p id="section-3.2.3-5">The <code>measurement-map</code> contents depend on the type of Reference Value.
 For all, the <code>mkey</code> uses the text variant of the <code>$measured-element-type-choice</code>.
-The value of the <code>mkey</code> MUST be "cca.rim" for the RIM measurement, "cca.rpv" for the RPV measurement, and "cca.rem0".."cca.rem3" for the REM measurements.
+The value of the <code>mkey</code> MUST be "cca.rim" for the RIM measurement, "cca.rpv" for the RPV measurement, "cca.mec-policy" for the MEC policy, and "cca.rem0".."cca.rem3" for the REM measurements.
 The <code>authorized-by</code> field of the <code>measurement-map</code> MUST NOT be present.<a href="#section-3.2.3-5" class="pilcrow">¶</a></p>
 <p id="section-3.2.3-6">RIM and REMs are encoded as <code>digests</code> (key 2).<a href="#section-3.2.3-6" class="pilcrow">¶</a></p>
 <p id="section-3.2.3-7">RPV is encoded using a <code>raw-value</code> (key 4) using the <code>tagged bytes</code> variant of the <code>$raw-value-type-choice</code>.<a href="#section-3.2.3-7" class="pilcrow">¶</a></p>
-<p id="section-3.2.3-8">All the Realm Reference Values are optional except RIM, which is mandatory.<a href="#section-3.2.3-8" class="pilcrow">¶</a></p>
-<div id="comid-example-2">
+<p id="section-3.2.3-8">The Realm MEC policy is encoded as described in <a href="#sec-realm-mec-policy-refval" class="auto internal xref">Section 3.2.3.1</a>.<a href="#section-3.2.3-8" class="pilcrow">¶</a></p>
+<p id="section-3.2.3-9">All the Realm Reference Values are optional except RIM, which is mandatory.<a href="#section-3.2.3-9" class="pilcrow">¶</a></p>
+<div id="sec-realm-mec-policy-refval">
 <section id="section-3.2.3.1">
-            <h5 id="name-comid-example-3">
-<a href="#section-3.2.3.1" class="section-number selfRef">3.2.3.1. </a><a href="#name-comid-example-3" class="section-name selfRef">CoMID Example</a>
+            <h5 id="name-realm-mec-policy">
+<a href="#section-3.2.3.1" class="section-number selfRef">3.2.3.1. </a><a href="#name-realm-mec-policy" class="section-name selfRef">Realm MEC Policy</a>
             </h5>
-<p id="section-3.2.3.1-1">An example CoMID containing one Reference Values triple with the expected values for a Realm is given in <a href="#ex-cca-realm-refval" class="auto internal xref">Figure 23</a>.<a href="#section-3.2.3.1-1" class="pilcrow">¶</a></p>
-<span id="name-cca-realm-identifiers"></span><div id="ex-cca-realm-refval">
+<p id="section-3.2.3.1-1">The Realm MEC policy identifies the Memory Encryption Context (MEC) policy of the Realm, as reported in the Realm MEC policy claim of the CCA Realm token (<span><a href="https://datatracker.ietf.org/doc/html/draft-ffm-rats-cca-token-04#section-4.8" class="relref">Section 4.8</a> of [<a href="#I-D.ffm-rats-cca-token" class="cite xref">I-D.ffm-rats-cca-token</a>]</span>).
+If a MEC policy Reference Value is provided, the Verifier appraises the claim against it.
+A Reference Value Provider that accepts any MEC policy omits the Reference Value.<a href="#section-3.2.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.3.1-2">The MEC policy is represented in the <code>integer</code> entry (key 17) of the <code>measurement-values-map</code> (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-12#section-5.1.4.9" class="relref">Section 5.1.4.9</a> of [<a href="#I-D.ietf-rats-corim" class="cite xref">I-D.ietf-rats-corim</a>]</span>).
+The value is an untagged <code>int</code>, which has exact match semantics: the Realm MEC policy claim in Evidence is a match if and only if it is equal to the value in the Reference Value.
+The <code>tagged-integer-set</code> and <code>tagged-integer-range</code> variants MUST NOT be used.
+The integer values are those of the Realm MEC policy claim, shown in <a href="#cddl-mec-policy-mvm" class="auto internal xref">Figure 23</a>.<a href="#section-3.2.3.1-2" class="pilcrow">¶</a></p>
+<span id="name-cca-realm-mec-policy-measur"></span><div id="cddl-mec-policy-mvm">
 <figure id="figure-23">
-              <div class="alignLeft art-text artwork" id="section-3.2.3.1-2.1">
+              <div class="lang-cddl sourcecode" id="section-3.2.3.1-3.1">
+<pre>
+cca-mec-policy-measurement-values-map = {
+  &amp;(integer: 17) =&gt; cca-realm-mec-policy
+}
+
+cca-realm-mec-policy-shared = 0
+cca-realm-mec-policy-private = 1
+
+cca-realm-mec-policy = cca-realm-mec-policy-shared /
+                       cca-realm-mec-policy-private
+</pre>
+</div>
+<figcaption><a href="#figure-23" class="selfRef">Figure 23</a>:
+<a href="#name-cca-realm-mec-policy-measur" class="selfRef">CCA Realm MEC Policy measurement-values-map</a>
+              </figcaption></figure>
+</div>
+<p id="section-3.2.3.1-4">The <code>measurement-values-map</code> is wrapped in a <code>measurement-map</code> with an <code>mkey</code> using the text variant of the <code>$measured-element-type-choice</code>.
+The value of the <code>mkey</code> MUST be "cca.mec-policy".
+There MUST be only one <code>measurement-map</code> with <code>mkey</code> "cca.mec-policy" in the triple.
+The <code>authorized-by</code> field of the <code>measurement-map</code> MUST NOT be present.<a href="#section-3.2.3.1-4" class="pilcrow">¶</a></p>
+<span id="name-cca-realm-mec-policy-measure"></span><div id="cddl-mec-policy-mm">
+<figure id="figure-24">
+              <div class="lang-cddl sourcecode" id="section-3.2.3.1-5.1">
+<pre>
+cca-mec-policy-measurement-map = {
+  &amp;(mkey: 0) =&gt; "cca.mec-policy"
+  &amp;(mval: 1) =&gt; cca-mec-policy-measurement-values-map
+}
+</pre>
+</div>
+<figcaption><a href="#figure-24" class="selfRef">Figure 24</a>:
+<a href="#name-cca-realm-mec-policy-measure" class="selfRef">CCA Realm MEC Policy measurement-map</a>
+              </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="comid-example-2">
+<section id="section-3.2.3.2">
+            <h5 id="name-comid-example-3">
+<a href="#section-3.2.3.2" class="section-number selfRef">3.2.3.2. </a><a href="#name-comid-example-3" class="section-name selfRef">CoMID Example</a>
+            </h5>
+<p id="section-3.2.3.2-1">An example CoMID containing one Reference Values triple with the expected values for a Realm is given in <a href="#ex-cca-realm-refval" class="auto internal xref">Figure 25</a>.<a href="#section-3.2.3.2-1" class="pilcrow">¶</a></p>
+<span id="name-cca-realm-identifiers"></span><div id="ex-cca-realm-refval">
+<figure id="figure-25">
+              <div class="alignLeft art-text artwork" id="section-3.2.3.2-2.1">
 <pre>
 / concise-mid-tag / {
   / comid.tag-identity / 1 : {
@@ -2240,6 +2300,12 @@ The <code>authorized-by</code> field of the <code>measurement-map</code> MUST NO
                   717569636b2062726f776e20666f7820'
               )
             }
+          },
+          / measurement-map (MEC policy) / {
+            / comid.mkey / 0 : "cca.mec-policy",
+            / comid.mval / 1 : {
+              / comid.integer / 17 : 1 / private /
+            }
           }
         ]
       ]
@@ -2248,7 +2314,7 @@ The <code>authorized-by</code> field of the <code>measurement-map</code> MUST NO
 }
 </pre>
 </div>
-<figcaption><a href="#figure-23" class="selfRef">Figure 23</a>:
+<figcaption><a href="#figure-25" class="selfRef">Figure 25</a>:
 <a href="#name-cca-realm-identifiers" class="selfRef">CCA realm identifiers</a>
               </figcaption></figure>
 </div>
@@ -2262,7 +2328,7 @@ The <code>authorized-by</code> field of the <code>measurement-map</code> MUST NO
 <a href="#section-3.2.4" class="section-number selfRef">3.2.4. </a><a href="#name-evidence-transformations-2" class="section-name selfRef">Evidence Transformations</a>
           </h4>
 <p id="section-3.2.4-1">This section describes the transformations required to map a CCA Realm Token to its equivalent CoRIM internal representation.<a href="#section-3.2.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.2.4-2"><a href="#trans-realm" class="auto internal xref">Figure 28</a> shows the complete transformation.<a href="#section-3.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.4-2"><a href="#trans-realm" class="auto internal xref">Figure 31</a> shows the complete transformation.<a href="#section-3.2.4-2" class="pilcrow">¶</a></p>
 <div id="realm-identification">
 <section id="section-3.2.4.1">
             <h5 id="name-realm-identification">
@@ -2270,7 +2336,7 @@ The <code>authorized-by</code> field of the <code>measurement-map</code> MUST NO
             </h5>
 <p id="section-3.2.4.1-1">The following function maps the CCA Realm Initial Measurement - which, as discussed in <a href="#realm-id" class="auto internal xref">Section 3.2.2</a>, provides a stable identifier for the Realm - onto a CoRIM <code>environment-map</code>.<a href="#section-3.2.4.1-1" class="pilcrow">¶</a></p>
 <span id="name-transform-a-cca-realm-initi"></span><div id="trans-realm-id">
-<figure id="figure-24">
+<figure id="figure-26">
               <div class="lang-pseudocode sourcecode" id="section-3.2.4.1-2.1">
 <pre>
 FUNC cca_realm_id_to_env(
@@ -2283,7 +2349,7 @@ FUNC cca_realm_id_to_env(
 }
 </pre>
 </div>
-<figcaption><a href="#figure-24" class="selfRef">Figure 24</a>:
+<figcaption><a href="#figure-26" class="selfRef">Figure 26</a>:
 <a href="#name-transform-a-cca-realm-initi" class="selfRef">Transform a CCA Realm Initial Measurement into an Element Map</a>
               </figcaption></figure>
 </div>
@@ -2297,7 +2363,7 @@ FUNC cca_realm_id_to_env(
 <p id="section-3.2.4.2-1">The following function maps the CCA Realm Initial Measurement claim to a CoRIM element map.
 The element identifier is "cca.rim", and the element claims use the standard digests attribute to represent the RIM value, using the digest algorithm taken from the Realm hash algorithm ID claim.<a href="#section-3.2.4.2-1" class="pilcrow">¶</a></p>
 <span id="name-transform-a-cca-realm-initia"></span><div id="trans-rim">
-<figure id="figure-25">
+<figure id="figure-27">
               <div class="lang-pseudocode sourcecode" id="section-3.2.4.2-2.1">
 <pre>
 FUNC element-from-rim(
@@ -2315,7 +2381,7 @@ FUNC element-from-rim(
 }
 </pre>
 </div>
-<figcaption><a href="#figure-25" class="selfRef">Figure 25</a>:
+<figcaption><a href="#figure-27" class="selfRef">Figure 27</a>:
 <a href="#name-transform-a-cca-realm-initia" class="selfRef">Transform a CCA Realm Initial Measurement into an Element Map</a>
               </figcaption></figure>
 </div>
@@ -2329,7 +2395,7 @@ FUNC element-from-rim(
 <p id="section-3.2.4.3-1">The following function maps the i-th (0..3) bank of a CCA Realm Extended Measurements claim to a CoRIM element map.
 The element identifier is one of "cca.rem0".."cca.rem3", depending on the bank index, and the element claims use the standard digests attribute to represent the REM value, using the digest algorithm taken from the Realm hash algorithm ID claim.<a href="#section-3.2.4.3-1" class="pilcrow">¶</a></p>
 <span id="name-transform-a-cca-realm-exten"></span><div id="trans-rem">
-<figure id="figure-26">
+<figure id="figure-28">
               <div class="lang-pseudocode sourcecode" id="section-3.2.4.3-2.1">
 <pre>
 FUNC element-from-rem(
@@ -2348,7 +2414,7 @@ FUNC element-from-rem(
 }
 </pre>
 </div>
-<figcaption><a href="#figure-26" class="selfRef">Figure 26</a>:
+<figcaption><a href="#figure-28" class="selfRef">Figure 28</a>:
 <a href="#name-transform-a-cca-realm-exten" class="selfRef">Transform a CCA Realm Extended Measurement Bank into an Element Map</a>
               </figcaption></figure>
 </div>
@@ -2362,7 +2428,7 @@ FUNC element-from-rem(
 <p id="section-3.2.4.4-1">The following function maps the CCA realm personalization value claim to a CoRIM element map.
 The element identifier is "cca.rpv", and the element claims use the standard raw-values attribute to represent the personalization value as tagged-bytes.<a href="#section-3.2.4.4-1" class="pilcrow">¶</a></p>
 <span id="name-transform-a-cca-realm-perso"></span><div id="trans-rpv">
-<figure id="figure-27">
+<figure id="figure-29">
               <div class="lang-pseudocode sourcecode" id="section-3.2.4.4-2.1">
 <pre>
 FUNC element-from-rpv(
@@ -2378,26 +2444,57 @@ FUNC element-from-rpv(
 }
 </pre>
 </div>
-<figcaption><a href="#figure-27" class="selfRef">Figure 27</a>:
+<figcaption><a href="#figure-29" class="selfRef">Figure 29</a>:
 <a href="#name-transform-a-cca-realm-perso" class="selfRef">Transform a CCA Realm Personalization Value into an Element Map</a>
               </figcaption></figure>
 </div>
 </section>
 </div>
-<div id="realm-token">
+<div id="realm-mec-policy">
 <section id="section-3.2.4.5">
-            <h5 id="name-realm-token">
-<a href="#section-3.2.4.5" class="section-number selfRef">3.2.4.5. </a><a href="#name-realm-token" class="section-name selfRef">Realm Token</a>
+            <h5 id="name-realm-mec-policy-2">
+<a href="#section-3.2.4.5" class="section-number selfRef">3.2.4.5. </a><a href="#name-realm-mec-policy-2" class="section-name selfRef">Realm MEC Policy</a>
             </h5>
-<p id="section-3.2.4.5-1">The following function maps the CCA realm's claims set to a single CoRIM <code>ae-item</code>.<a href="#section-3.2.4.5-1" class="pilcrow">¶</a></p>
-<p id="section-3.2.4.5-2">The environment is synthesized from the RIM.
+<p id="section-3.2.4.5-1">The following function maps the CCA Realm MEC policy claim to a CoRIM element map.
+The element identifier is "cca.mec-policy", and the element claims use the standard integer attribute (key 17) to represent the MEC policy as a bare <code>int</code>, so that it is compared for exact match against the Reference Value (<a href="#sec-realm-mec-policy-refval" class="auto internal xref">Section 3.2.3.1</a>).<a href="#section-3.2.4.5-1" class="pilcrow">¶</a></p>
+<span id="name-transform-a-cca-realm-mec-p"></span><div id="trans-mec-policy">
+<figure id="figure-30">
+              <div class="lang-pseudocode sourcecode" id="section-3.2.4.5-2.1">
+<pre>
+FUNC element-from-mec-policy(
+    mec-policy: cca-realm-mec-policy
+) -&gt; element-map {
+    em := element-map::NEW()
+
+    em.element-id = tstr("cca.mec-policy")
+
+    em.element-claims.integer = mec-policy
+
+    RETURN em
+}
+</pre>
+</div>
+<figcaption><a href="#figure-30" class="selfRef">Figure 30</a>:
+<a href="#name-transform-a-cca-realm-mec-p" class="selfRef">Transform a CCA Realm MEC Policy into an Element Map</a>
+              </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="realm-token">
+<section id="section-3.2.4.6">
+            <h5 id="name-realm-token">
+<a href="#section-3.2.4.6" class="section-number selfRef">3.2.4.6. </a><a href="#name-realm-token" class="section-name selfRef">Realm Token</a>
+            </h5>
+<p id="section-3.2.4.6-1">The following function maps the CCA realm's claims set to a single CoRIM <code>ae-item</code>.<a href="#section-3.2.4.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.4.6-2">The environment is synthesized from the RIM.
 Each REM bank, if present, is mapped to an element-map entry with identifier "cca.rem0".."cca.rem3".
-The personalization value, if present, is mapped to an element-map entry with identifier "cca.rpv".<a href="#section-3.2.4.5-2" class="pilcrow">¶</a></p>
-<p id="section-3.2.4.5-3">The process uses the functions defined in <a href="#trans-realm-id" class="auto internal xref">Figure 24</a>, <a href="#trans-rim" class="auto internal xref">Figure 25</a>, <a href="#trans-rem" class="auto internal xref">Figure 26</a>, and <a href="#trans-rpv" class="auto internal xref">Figure 27</a>.<a href="#section-3.2.4.5-3" class="pilcrow">¶</a></p>
-<p id="section-3.2.4.5-4">The process assumes that the profile of the CCA Realm claims-set is "tag:arm.com,2024:realm#2.0.0".<a href="#section-3.2.4.5-4" class="pilcrow">¶</a></p>
+The personalization value, if present, is mapped to an element-map entry with identifier "cca.rpv".
+The MEC policy is mapped to an element-map entry with identifier "cca.mec-policy".<a href="#section-3.2.4.6-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.4.6-3">The process uses the functions defined in <a href="#trans-realm-id" class="auto internal xref">Figure 26</a>, <a href="#trans-rim" class="auto internal xref">Figure 27</a>, <a href="#trans-rem" class="auto internal xref">Figure 28</a>, <a href="#trans-rpv" class="auto internal xref">Figure 29</a>, and <a href="#trans-mec-policy" class="auto internal xref">Figure 30</a>.<a href="#section-3.2.4.6-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.4.6-4">The process assumes that the profile of the CCA Realm claims-set is "tag:arm.com,2024:realm#2.0.0".<a href="#section-3.2.4.6-4" class="pilcrow">¶</a></p>
 <span id="name-transform-a-cca-realm-into-"></span><div id="trans-realm">
-<figure id="figure-28">
-              <div class="lang-pseudocode sourcecode" id="section-3.2.4.5-5.1">
+<figure id="figure-31">
+              <div class="lang-pseudocode sourcecode" id="section-3.2.4.6-5.1">
 <pre>
 FUNC transform(
     R: cca-realm-claims
@@ -2433,6 +2530,10 @@ FUNC transform(
         e := element-from-rpv(R.arm-platform-config-label)
         element-list::APPEND(e)
 
+    # map MEC policy
+    e := element-from-mec-policy(R.cca-realm-mec-policy-label)
+    element-list::APPEND(e)
+
     item.addition.element-list = element-list
     item.addition.profile =
         "tag:arm.com,2025:endorsements/cca_realm#1.0.0"
@@ -2442,7 +2543,7 @@ FUNC transform(
 }
 </pre>
 </div>
-<figcaption><a href="#figure-28" class="selfRef">Figure 28</a>:
+<figcaption><a href="#figure-31" class="selfRef">Figure 31</a>:
 <a href="#name-transform-a-cca-realm-into-" class="selfRef">Transform a CCA Realm into a CoRIM `ae` Relation</a>
               </figcaption></figure>
 </div>
@@ -2459,7 +2560,21 @@ FUNC transform(
       <h2 id="name-security-considerations">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-4-1"><span class="cref" id="todo">TODO</span><a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="realm-mec-policy-and-attestation-results">
+<section id="section-4.1">
+        <h3 id="name-realm-mec-policy-and-attest">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-realm-mec-policy-and-attest" class="section-name selfRef">Realm MEC Policy and Attestation Results</a>
+        </h3>
+<p id="section-4.1-1">The Realm MEC policy determines whether the memory of a Realm is protected by a Memory Encryption Context that is either private to the Realm or shared (<a href="#sec-realm-mec-policy-refval" class="auto internal xref">Section 3.2.3.1</a>).
+This directly affects the confidentiality of the Realm's runtime state in relation to the other software on the platform and, consequently, the value that a Verifier assigns to the <code>runtime-opaque</code> Trustworthiness Claim in the Trustworthiness Vector of the Attestation Results (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-ar4si-11#section-2.3.4" class="relref">Section 2.3.4</a> of [<a href="#I-D.ietf-rats-ar4si" class="cite xref">I-D.ietf-rats-ar4si</a>]</span>).<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">A Verifier that produces <code>runtime-opaque</code> values for CCA Realms needs to take the MEC policy into account.
+For instance, it could map a "private" MEC policy to <code>affirming</code>, unconditionally.
+However, for a "shared" MEC policy, the choice between <code>affirming</code> and <code>warning</code> entirely depends on the Appraisal Policies of both the Verifier and the Relying Party.
+In particular, if the RVP omits the MEC policy Reference Value -- i.e., if it doesn't enforce any specific MEC policy -- a Verifier with no Appraisal Policy for the MEC policy cannot appraise that facet, and sets the <code>runtime-opaque</code> value to <code>incomplete</code> (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-ar4si-11#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-rats-ar4si" class="cite xref">I-D.ietf-rats-ar4si</a>]</span>).
+To enable the Relying Party to apply its own Appraisal Policy for Attestation Results, the Verifier can also convey the unappraised value of the Realm MEC policy claim in the Attestation Results.
+One option would be to use the <code>attester-claims</code> map of the <code>EAR-appraisal</code> (<span>[<a href="#I-D.ietf-rats-ear" class="cite xref">I-D.ietf-rats-ear</a>]</span>).<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="iana-considerations">
@@ -2487,7 +2602,7 @@ FUNC transform(
 <dd class="break"></dd>
 <dt id="I-D.ietf-rats-corim">[I-D.ietf-rats-corim]</dt>
         <dd>
-<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Deshpande, Y.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Concise Reference Integrity Manifest"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-corim-11</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-11">https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-11</a>&gt;</span>. </dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Deshpande, Y.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Concise Reference Integrity Manifest"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-corim-12</span>, <time datetime="2026-11-01" class="refDate">1 November 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-12">https://datatracker.ietf.org/doc/html/draft-ietf-rats-corim-12</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -2522,6 +2637,14 @@ FUNC transform(
         <dd>
 <span class="refAuthor">Arm</span>, <span class="refTitle">"Learn the architecture - Introducing Arm Confidential Compute Architecture"</span>, <time datetime="2025-03" class="refDate">March 2025</time>, <span>&lt;<a href="https://developer.arm.com/documentation/den0125/0400">https://developer.arm.com/documentation/den0125/0400</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="I-D.ietf-rats-ar4si">[I-D.ietf-rats-ar4si]</dt>
+        <dd>
+<span class="refAuthor">Voit, E.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Hardjono, T.</span>, <span class="refAuthor">Fossati, T.</span>, and <span class="refAuthor">V. Scarlata</span>, <span class="refTitle">"Attestation Results for Secure Interactions"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-ar4si-11</span>, <time datetime="2026-10-30" class="refDate">30 October 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-ar4si-11">https://datatracker.ietf.org/doc/html/draft-ietf-rats-ar4si-11</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-rats-ear">[I-D.ietf-rats-ear]</dt>
+        <dd>
+<span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Voit, E.</span>, <span class="refAuthor">Trofimov, S.</span>, and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"EAT Attestation Results"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-ear-06</span>, <time datetime="2026-11-19" class="refDate">19 November 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-ear-06">https://datatracker.ietf.org/doc/html/draft-ietf-rats-ear-06</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9334">[RFC9334]</dt>
       <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Thaler, D.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Remote ATtestation procedureS (RATS) Architecture"</span>, <span class="seriesInfo">RFC 9334</span>, <span class="seriesInfo">DOI 10.17487/RFC9334</span>, <time datetime="2023-01" class="refDate">January 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9334">https://www.rfc-editor.org/rfc/rfc9334</a>&gt;</span>. </dd>
@@ -2536,7 +2659,7 @@ FUNC transform(
       <h2 id="name-acknowledgements">
 <a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
-<p id="appendix-A-1"><span class="cref" id="todo_1">TODO</span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1"><span class="cref" id="todo">TODO</span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contributors">
